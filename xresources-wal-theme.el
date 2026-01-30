@@ -1,4 +1,4 @@
-;;; xresources-theme.el --- Use your .Xresources as your emacs theme
+;;; xresources-wal-theme.el --- Use your colors.Xresources as your emacs theme
 
 ;; Copyright (C) 2014-2014 Marten Lienen <marten.lienen@gmail.com>
 
@@ -24,15 +24,30 @@
 
 ;;; Commentary:
 
-;; Use the colors defined in your .Xresources as your emacs theme
+;; Use the colors defined in your colors.Xresources as your emacs theme
 
 ;;; Code:
 
-(defun xresources-theme-color (name)
-  "Read the color NAME (e.g. color5) from the X resources."
-  (x-get-resource name ""))
+(defun wal-get-resource (name)
+  "Run regex with NAME on colors.Xresources to get color values."
+  (with-temp-buffer
+    ;; read file into buffer
+    (insert-file-contents "~/.cache/wal/colors.Xresources")
+    ;; move cursor to start of buffer
+    (goto-char (point-min))
+    ;; match name: + any number of spaces + # + 6 hex digits + hex is in the second group
+    (re-search-forward (format "%s:[[:space:]]*\\(#[[:xdigit:]]\\{6\\}\\)" name) nil t)
+    (match-string 1)
+    )
+  )
 
-(deftheme xresources "~/.Xresources as a theme")
+;; rather than using xresources, use value from wal
+(defun xresources-theme-color (name)
+  "Read the color NAME (e.g. color5) from wal defined X resources."
+  (wal-get-resource name)
+  )
+
+(deftheme xresources-wal "~/.cache/wal/colors.Xresources as a theme")
 
 (let* ((foreground (xresources-theme-color "foreground"))
        (background (xresources-theme-color "background"))
@@ -53,7 +68,7 @@
        (light-cyan (xresources-theme-color "color14"))
        (white (xresources-theme-color "color15")))
   (custom-theme-set-faces
-   'xresources
+   'xresources-wal
 
    ;; Built-in
    ;; basic coloring
@@ -489,6 +504,6 @@
                (file-name-as-directory
                 (file-name-directory load-file-name))))
 
-(provide-theme 'xresources)
+(provide-theme 'xresources-wal)
 
-;;; xresources-theme.el ends here
+;;; xresources-wal-theme.el ends here
