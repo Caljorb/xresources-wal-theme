@@ -50,7 +50,7 @@
 (deftheme xresources-wal "~/.cache/wal/colors.Xresources as a theme")
 
 (let* ((foreground (xresources-theme-color "foreground"))
-       (background (xresources-theme-color "background"))
+       (background (concat (xresources-theme-color "background") "40"))
        (black (xresources-theme-color "color0"))
        (red (xresources-theme-color "color1"))
        (green (xresources-theme-color "color2"))
@@ -82,7 +82,7 @@
    `(header-line ((t (:foreground ,yellow
                                   :background ,background
                                   :box (:line-width -1 :style released-button)))))
-   `(highlight ((t (:background ,background))))
+   `(highlight ((t (:background ,black)))) ;; change from background
    `(success ((t (:foreground ,green :weight bold))))
    `(warning ((t (:foreground ,red :weight bold))))
 
@@ -297,7 +297,7 @@
    `(ansi-color-green ((t (:foregrounB ,green))))
    `(ansi-color-cyan ((t (:foreground ,cyan))))
    `(ansi-color-blue ((t (:foreground ,blue))))
-   `(ansi-color-magenta ((t (:foregrou0E ,magenta))))
+   `(ansi-color-magenta ((t (:foreground ,magenta))))
    `(ansi-color-bright-black ((t (:foreground ,gray))))
    `(ansi-color-bright-white ((t (:foreground ,light-gray))))
    `(ansi-color-bright-red ((t (:foreground ,light-red))))
@@ -411,7 +411,7 @@
    `(linum ((t (:foreground ,green :background ,background))))
 
    ;; magit
-   `(magit-item-highlight ((t (:background ,background))))
+   `(magit-item-highlight ((t (:background ,black)))) ;; change from background
    `(magit-section-title ((t (:foreground ,yellow :weight bold))))
    `(magit-process-ok ((t (:foreground ,green :weight bold))))
    `(magit-process-ng ((t (:foreground ,red :weight bold))))
